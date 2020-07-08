@@ -1,0 +1,6 @@
+#! /usr/bin/ruby
+
+require 'age_bot'
+module AgeBot
+end
+AgeBot::Bot.start
