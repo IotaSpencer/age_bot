@@ -9,6 +9,9 @@ module AgeBot
         extend Discordrb::Commands::CommandContainer
         command(:hello) do |event|
           user = event.user
+          event.message.react('👋')
+          event.message.react('🇭')
+          event.message.react('🇮')
           user.pm(<<~HERE)
             Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
             For #{event.server.name} that role is **#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}**
@@ -18,6 +21,8 @@ module AgeBot
               When you do so, attach this message to the picture as a caption
               `$verify #{event.server.id}`
           HERE
+          sleep(5)
+          event.message.delete
         end
         command(:confirm, help_available: false, min_args: 2) do |event, user, message_id|
           admin        = event.server.member(event.user.id)
