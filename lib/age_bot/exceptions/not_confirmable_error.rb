@@ -1,8 +1,8 @@
 module AgeBot
   module Execeptions
-    class NoSuchMessageError < StandardError
-      def initialize(event, id, msg = nil)
-        msg ||= "Message '#{id}' does not exist"
+    class NotConfirmableError < StandardError
+      def initialize(event, msg = nil)
+        msg  = msg || "#{event.user} cannot confirm users. (Does not have any roles listed as confirmable)"
         rply = event.respond(msg)
         Timeout.timeout(2.5) do
           event.delete
