@@ -23,7 +23,7 @@ module AgeBot
               sent_msg_obj = channel.send_message <<~HERE
                 #{file.url}
                 To add the 'Adult' role to this user, enter the following:
-                `$confirm $XXXXX$ #{event.user.distinct}`
+                `$confirm $XXXXX$ "#{event.user.distinct}"`
 
                 Sent as of #{event.timestamp} UTC
 
