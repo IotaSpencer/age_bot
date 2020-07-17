@@ -11,7 +11,7 @@ module AgeBot
             user    = event.user
             msg_obj = event.message.content.split(' ')
             file    = event.message.attachments[0]
-            msg     = msgobj
+            msg = msg_obj
             puts 'running verification on input for sanity'
             puts "Checking #{event.message.content.split(' ')[1]} in ServerDB"
             server_id = msg_obj[1]
