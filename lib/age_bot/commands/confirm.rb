@@ -46,7 +46,7 @@ module AgeBot
           end
         end
 
-        command(:reject, help_available: false, min_args: 3) do |event, user, message_id, *reason|
+        command(:reject, help_available: false, min_args: 3) do |event, message_id, user, *reason|
           admin                   = event.server.member(event.author.id)
           user_name, user_discrim = *user.split('#')
           user                    = AgeBot::Bot::Helpers.member_from_tag(event.server, user)
