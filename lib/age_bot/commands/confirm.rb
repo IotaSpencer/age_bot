@@ -12,6 +12,8 @@ module AgeBot
           event.message.react('👋')
           event.message.react('🇭')
           event.message.react('🇮')
+          event.channel.start_typing
+          sleep(5)
           user.pm(<<~HERE)
             Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
             For #{event.server.name} that role is **#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}**
@@ -24,7 +26,7 @@ module AgeBot
           sleep(5)
           event.message.delete
         end
-        command(:confirm, help_available: false, min_args: 2) do |event, user, message_id|
+        command(:confirm, help_available: false, min_args: 2) do |event, message_id, user|
           admin        = event.server.member(event.user.id)
           user_name    = user.split('#')[0]
           user_discrim = user.split('#')[1]
@@ -57,6 +59,29 @@ module AgeBot
             rescue Discordrb::Errors::UnknownMessage
               event.respond('That message ID does not exist in this channel.')
             end
+          else
+            raise AgeBot::Execeptions::NotConfirmableError.new(event)
+          end
+        end
+        command(:prune, {help_available: true}) do |event, channel|
+          admin = event.server.member(event.author.id)
+          if HELPERS.can_confirm?(admin)
+            channel = event.channel
+            begin
+              channel.prune(100) do |m|
+                m.content !~ /\$hello/
+              end
+            rescue StandardError
+              # dingleberry
+            end
+          else
+            raise AgeBot::Execeptions::NotConfirmableError.new(event)
+          end
+        end
+        command(:chunks, {help_available: true}) do |event|
+          admin = event.server.member(event.author.id)
+          if HELPERS.can_confirm?(admin)
+            event.bot.request_chunks(event.server.id)
           else
             raise AgeBot::Execeptions::NotConfirmableError.new(event)
           end
