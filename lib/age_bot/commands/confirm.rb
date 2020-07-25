@@ -9,6 +9,7 @@ module AgeBot
         extend Discordrb::Commands::CommandContainer
         command(:hello, {
             help_available: false,
+            max_args:       0,
             description:    "Get a message telling you to verify for a certain role.",
             usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}hello"
         }) do |event|
