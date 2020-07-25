@@ -5,7 +5,7 @@ module AgeBot
 
     @bot = Discordrb::Commands::CommandBot.new(
         token:                  AgeBot::Configs::BotConfig.config.bot.token,
-        prefix:                 '$',
+        prefix:                 AgeBot::Configs::BotConfig.config.bot.prefix,
         fancy_log:              true,
         log_mode:               :normal,
         advanced_functionality: true
