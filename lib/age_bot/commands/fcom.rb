@@ -7,7 +7,9 @@ module AgeBot
       module FCom
         extend Discordrb::Commands::CommandContainer
         command(:fhello, {
-            description: "force a #{AgeBot::Configs::BotConfig.config.bot.prefix}hello on a user",
+            max_args:    1,
+            min_args:    1,
+            description: "Force a #{AgeBot::Configs::BotConfig.config.bot.prefix}hello on a user",
             usage:       "#{AgeBot::Configs::BotConfig.config.bot.prefix}fhello"
         }) do |event, username|
           user = AgeBot::Bot::Helpers.member_from_tag(event.server.id.to_s, username)
