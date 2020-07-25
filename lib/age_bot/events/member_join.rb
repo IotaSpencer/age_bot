@@ -12,7 +12,7 @@ module AgeBot
               
               For you that would be `#{event.user.distinct}`
               When you do so, attach this message to the picture as a caption
-              `$verify #{event.server.id}`
+              `#{AgeBot::Configs::BotConfig.config.bot.prefix}verify #{event.server.id}`
           HERE
         end
       end
