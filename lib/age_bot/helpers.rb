@@ -16,6 +16,7 @@ module AgeBot
       # @param [String] tag the discord NAME#0000
       def self.member_from_tag(server, tag)
         user_name, user_discrim = *tag.split('#')
+        AgeBot::Bot.bot.request_chunks(server)
         user                    = AgeBot::Bot.bot.find_user(user_name, user_discrim)
         case
         when server.is_a?(Discordrb::Server)

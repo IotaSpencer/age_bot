@@ -12,6 +12,7 @@ module AgeBot
             description: "Force a #{AgeBot::Configs::BotConfig.config.bot.prefix}hello on a user",
             usage:       "#{AgeBot::Configs::BotConfig.config.bot.prefix}fhello"
         }) do |event, username|
+          event.bot.request_chunks(event.server.id.to_s)
           user = AgeBot::Bot::Helpers.member_from_tag(event.server.id.to_s, username)
           user.dm(<<~HEREDOC)
             Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.

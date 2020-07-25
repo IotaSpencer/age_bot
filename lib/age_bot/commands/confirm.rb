@@ -38,7 +38,7 @@ module AgeBot
           admin        = event.server.member(event.user.id)
           user_name    = user.split('#')[0]
           user_discrim = user.split('#')[1]
-          event.server.request_chunks(event.server.id.to_s)
+          event.bot.request_chunks(event.server.id.to_s)
           user_id = event.bot.find_user(user_name, user_discrim).id
           member  = event.server.member(user_id)
           if HELPERS.can_confirm?(admin)
