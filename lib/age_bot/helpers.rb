@@ -22,12 +22,12 @@ module AgeBot
         when server.is_a?(Discordrb::Server)
           srv = server
         when server.is_a?(String)
-          srv = server.to_i
-        when server.is_a?(Integer)
           srv = AgeBot::Bot.bot.server(server)
+        when server.is_a?(Integer)
+          srv = AgeBot::Bot.bot.server(server.to_s)
         end
         nil if srv.nil?
-        srv.member(AgeBot::Bot.bot.find_user(user_name, user_discrim).id)
+        srv.member(AgeBot::Bot.bot.find_user(user_name, user_discrim).id.to_s)
       end
     end
   end
