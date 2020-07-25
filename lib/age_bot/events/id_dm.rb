@@ -36,8 +36,11 @@ module AgeBot
                 This reason will be sent to this user. So be nice and concise.
               HERE
               sent_msg_obj.edit(sent_msg_obj.content.gsub('$XXXXX$', "#{sent_msg_obj.id}"))
+              user.send_message("Your submission has been sent.")
             rescue StandardError
-              event.respond("A bug has occured, please let my owner (")
+              event.respond("A bug has occured, please let my owner know (owner of https://discord.gg/nBB7K5y)")
+            ensure
+              user.send_message("If you haven't received a message that your submission has been sent, let the admins of the applicable server know to contact the owner of this bot.")
             end
 
           else
