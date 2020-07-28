@@ -52,7 +52,7 @@ module AgeBot
           else
             puts <<~HERE
               -----------------------------------------------
-              Message from #{event.user} — #{event.timestamp}
+              Message from #{event.user.id}(#{event.user.distinct}) — #{event.timestamp}
               "#{event.message.content}"
 
               -----------------------------------------------
