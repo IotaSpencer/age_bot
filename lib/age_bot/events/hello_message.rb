@@ -5,7 +5,7 @@ module AgeBot
         extend Discordrb::EventContainer
         message do |event|
           if event.channel.name =~ /hello/
-            if AgeBot::Bot::Helpers.parse_mention(event.content, event.server, event: event)
+            if AgeBot::Bot::Helpers.parse_mention(event.content, event.server, event: event).& name =~ /hello/
               user = event.author
               user.pm(<<~HERE)
                 Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
@@ -15,6 +15,11 @@ module AgeBot
                   For you that would be `#{event.user.distinct}`
                   When you do so, attach this message to the picture as a caption
                   `#{AgeBot::Configs::BotConfig.config.bot.prefix}verify #{event.server.id}`
+                
+                You are receiving this message because you messaged #{event.channel.name} a message that triggered me.
+                Your message will now be deleted since the message holds no purpose in #{event.channel.name}.
+
+                You may ask questions about the process in #{event.channel.name} but other than that, non-complying questions or messages will be deleted.
               HERE
               event.channel.delete_message(event.message.id)
             elsif event.content =~ /^[Hh][Ee][Ll][Ll][Oo]$/
@@ -27,6 +32,11 @@ module AgeBot
                   For you that would be `#{event.user.distinct}`
                   When you do so, attach this message to the picture as a caption
                   `#{AgeBot::Configs::BotConfig.config.bot.prefix}verify #{event.server.id}`
+                
+                You are receiving this message because you messaged #{event.channel.name} a message that triggered me.
+                Your message will now be deleted since the message holds no purpose in #{event.channel.name}.
+
+                You may ask questions about the process in #{event.channel.name} but other than that, non-complying questions or messages will be deleted.
               HERE
               event.channel.delete_message(event.message.id)
             end
