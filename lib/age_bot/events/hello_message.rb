@@ -5,7 +5,7 @@ module AgeBot
         extend Discordrb::EventContainer
         message do |event|
           if event.channel.name =~ /hello/
-            if AgeBot::Bot::Helpers.parse_mention(event.content, event.server, event: event).& name =~ /hello/
+            if AgeBot::Bot::Helpers.parse_mention(event.content, event.server, event: event)&.name =~ /hello/
               user = event.author
               user.pm(<<~HERE)
                 Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
