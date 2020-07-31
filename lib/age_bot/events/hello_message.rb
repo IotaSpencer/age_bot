@@ -4,7 +4,7 @@ module AgeBot
       module MemberJoin
         extend Discordrb::EventContainer
         message do |event|
-          if event.channel.name =~ /\#hello/
+          if event.channel.name =~ /hello/
             puts Discordrb.parse_mention(event.content).any? { |obj| obj == event.channel }
             user = event.author
             user.pm(<<~HERE)
@@ -16,7 +16,7 @@ module AgeBot
                 When you do so, attach this message to the picture as a caption
                 `#{AgeBot::Configs::BotConfig.config.bot.prefix}verify #{event.server.id}`
             HERE
-            
+
           end
         end
       end
