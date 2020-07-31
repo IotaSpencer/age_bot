@@ -16,10 +16,10 @@ module AgeBot
                   When you do so, attach this message to the picture as a caption
                   `#{AgeBot::Configs::BotConfig.config.bot.prefix}verify #{event.server.id}`
                 
-                You are receiving this message because you messaged #{event.channel.name} a message that triggered me.
-                Your message will now be deleted since the message holds no purpose in #{event.channel.name}.
+                You are receiving this message because you messaged ##{event.channel.name} a message that triggered me.
+                Your message will now be deleted since the message holds no purpose in ##{event.channel.name}.
 
-                You may ask questions about the process in #{event.channel.name} but other than that, non-complying questions or messages will be deleted.
+                You may ask questions about the process in ##{event.channel.name} but other than that, non-complying questions or messages will be deleted.
               HERE
               event.channel.delete_message(event.message.id)
             elsif event.content =~ /^[Hh][Ee][Ll][Ll][Oo]$/
