@@ -29,6 +29,26 @@ module AgeBot
         nil if srv.nil?
         srv.member(AgeBot::Bot.bot.find_user(user_name, user_discrim).id.to_s)
       end
+
+      def self.parse_mention(mention, server = nil, event: nil)
+        # Mention format: <@id>
+        if /<@!?(?<id>\d+)>/ =~ mention
+          event.bot.user(id)
+        elsif /<@&(?<id>\d+)>/ =~ mention
+          return server.role(id) if server
+          @servers.values.each do |element|
+            role = element.role(id)
+            return role unless role.nil?
+          end
+          # Return nil if no role is found
+          nil
+        elsif /<\#(?<id>\d+)>/ =~ mention
+          return event.bot.channel(id.to_s)
+
+        elsif /<(?<animated>a)?:(?<name>\w+):(?<id>\d+)>/ =~ mention
+          emoji(id) || Emoji.new({'animated' => !animated.nil?, 'name' => name, 'id' => id}, self, nil)
+        end
+      end
     end
   end
 end
