@@ -1,11 +1,13 @@
 module AgeBot
   module Bot
     module DiscordEvents
-      module MemberJoin
+      module MemberBadHello
         extend Discordrb::EventContainer
         message do |event|
           if event.channel.name =~ /hello/
-            if AgeBot::Bot::Helpers.parse_mention(event.content, event.server, event: event)&.name =~ /hello/
+            # #hello has been sent a message
+            if AgeBot::Bot::Helpers.parse_mention(event.content, event.server, event: event)&.name =~ /\#?hello/
+              # message was '#hello' or mention of #hello
               user = event.author
               user.pm(<<~HERE)
                 Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
@@ -23,6 +25,7 @@ module AgeBot
               HERE
               event.channel.delete_message(event.message.id)
             elsif event.content =~ /^[Hh][Ee][Ll][Ll][Oo]$/
+              # message was 'hello' or a variation on that
               user = event.author
               user.pm(<<~HERE)
                 Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
