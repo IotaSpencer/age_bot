@@ -35,7 +35,7 @@ module AgeBot
           srv = AgeBot::Bot.bot.server(server.to_s)
         end
         nil if srv.nil?
-        srv.member(AgeBot::Bot.bot.find_user(user_name, user_discrim).id.to_s)
+        srv.member(AgeBot::Bot.bot.find_user(username[:user], username[:discrim]).id.to_s)
       end
 
       def self.parse_mention(mention, server = nil, event: nil)
