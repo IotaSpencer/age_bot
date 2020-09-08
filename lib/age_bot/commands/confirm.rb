@@ -16,6 +16,7 @@ module AgeBot
           if event.channel.name =~ /hello/
             event.bot.request_chunks(event.server.id.to_s)
             user = event.user
+            Logger.debug "#{event.user.distinct} triggered '&hello' via '#{event.channel}'"
             user.pm(<<~HERE)
               Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
               For #{event.server.name} that role is **#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}**
