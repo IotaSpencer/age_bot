@@ -19,7 +19,7 @@ module AgeBot
           user = AgeBot::Bot::Helpers.member_from_tag(event.server.id.to_s, username)
           Logger.debug 'Tag parsed.'
           Logger.debug 'DM\'ing user'
-          user.dm(<<~HEREDOC)
+          user.pm(<<~HEREDOC)
             Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
             For #{event.server.name} that role is **#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}**
             To do so, please send me a picture of your ID with everything but your 'date of birth' blacked out along with some sort of Discord™ proof (Your account page with the email blacked out or a handwritten Discord™ tag 
