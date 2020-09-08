@@ -3,7 +3,7 @@
 module AgeBot
   module Bot
     module DiscordEvents
-      module IDDM
+      module Ready
         extend Discordrb::EventContainer
         ready do |event|
           event.bot.watching = "#{event.bot.servers.length - 1} servers for underage people."
