@@ -26,6 +26,7 @@ module AgeBot
         username = parse_tag(tag)
         AgeBot::Bot.bot.request_chunks(server)
         user = AgeBot::Bot.bot.find_user(username.fetch(:user), username.fetch(:discrim))
+        srv = nil
         case
         when server.is_a?(Discordrb::Server)
           srv = server
@@ -34,8 +35,9 @@ module AgeBot
         when server.is_a?(Integer)
           srv = AgeBot::Bot.bot.server(server.to_s)
         end
+        Logger.debug "'server' was a '#{server.class}'"
         nil if srv.nil?
-        srv.member(AgeBot::Bot.bot.find_user(username[:user], username[:discrim]).id.to_s)
+        srv.member(AgeBot::Bot.bot.find_user(username[:user], username[:discrim]).id.to_s, true)
       end
 
       def self.parse_mention(mention, server = nil, event: nil)
