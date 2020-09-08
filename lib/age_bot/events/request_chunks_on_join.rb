@@ -3,7 +3,7 @@
 module AgeBot
   module Bot
     module DiscordEvents
-      module RoleAudit
+      module RequestChunksOnJoin
         extend Discordrb::EventContainer
         member_join do |event|
           server_id = event.server.id.to_s
