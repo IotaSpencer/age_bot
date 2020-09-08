@@ -12,12 +12,20 @@ module AgeBot
         results.any?
       end
 
-      # @param [Discordrb::Server,String,Integer]
+      # grab username from tag simply
+      # @param [String] tag
+
+      def self.parse_tag(tag)
+        user, discrim = *tag.split('#')
+        {user: user, discrim: discrim}
+      end
+
+      # @param [Discordrb::Server,String,Integer] server the discord server/guild
       # @param [String] tag the discord NAME#0000
       def self.member_from_tag(server, tag)
-        user_name, user_discrim = *tag.split('#')
+        username = parse_tag(tag)
         AgeBot::Bot.bot.request_chunks(server)
-        user                    = AgeBot::Bot.bot.find_user(user_name, user_discrim)
+        user = AgeBot::Bot.bot.find_user(username.fetch(:user), username.fetch(:discrim))
         case
         when server.is_a?(Discordrb::Server)
           srv = server
@@ -32,9 +40,9 @@ module AgeBot
 
       def self.parse_mention(mention, server = nil, event: nil)
         # Mention format: <@id>
-        if /<@!?(?<id>\d+)>/ =~ mention
+        if /<@!?(?<id>\d+)>/ =~ mention # NickName Mention
           event.bot.user(id)
-        elsif /<@&(?<id>\d+)>/ =~ mention
+        elsif /<@&(?<id>\d+)>/ =~ mention # Role Mention
           return server.role(id) if server
           @servers.values.each do |element|
             role = element.role(id)
@@ -42,10 +50,10 @@ module AgeBot
           end
           # Return nil if no role is found
           nil
-        elsif /<\#(?<id>\d+)>/ =~ mention
+        elsif /<\#(?<id>\d+)>/ =~ mention # Channel Mention
           return event.bot.channel(id.to_s)
 
-        elsif /<(?<animated>a)?:(?<name>\w+):(?<id>\d+)>/ =~ mention
+        elsif /<(?<animated>a)?:(?<name>\w+):(?<id>\d+)>/ =~ mention # Emoji Mention
           emoji(id) || Emoji.new({'animated' => !animated.nil?, 'name' => name, 'id' => id}, self, nil)
         end
       end
