@@ -6,6 +6,7 @@ module AgeBot
         extend Discordrb::Commands::CommandContainer
         command(:shutdown, help_available: false, aliases: [:k]) do |event|
           if event.user.id == AgeBot::Configs::BotConfig.config.bot.owner.to_i
+            Logger.warn 'Shutting down.'
             event.respond ":skull:"
           else
             raise AgeBot::Execeptions::NotOwnerError.new(event)
@@ -33,7 +34,7 @@ module AgeBot
         # end
 
         command(:clear, help_available: false, min_args: 1, aliases: [:c]) do |event, count|
-          if event.user.id == AgeBot::Configs::BotConfig.config.bot.owner
+          if event.user.id == AgeBot::Configs::BotConfig.config.bot.owner.to_i
             c = count.to_i
             return "1:100" if c > 100
             event.channel.prune c, true
