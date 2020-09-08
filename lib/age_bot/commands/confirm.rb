@@ -13,22 +13,21 @@ module AgeBot
             description:    "Get a message telling you to verify for a certain role.",
             usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}hello"
         }) do |event|
-          user = event.user
-          event.message.react('👋')
-          event.message.react('🇭')
-          event.message.react('🇮')
-          sleep(5)
-          user.pm(<<~HERE)
-            Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
-            For #{event.server.name} that role is **#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}**
-            To do so, please send me a picture of your ID with everything but your 'date of birth' blacked out along with some sort of Discord™ proof (Your account page with the email blacked out or a handwritten Discord™ tag 
-              
-              For you that would be `#{event.user.distinct}`
-              When you do so, attach this message to the picture as a caption
-              `#{AgeBot::Configs::BotConfig.config.bot.prefix}verify #{event.server.id}`
-          HERE
-          sleep(5)
-          event.message.delete
+          if event.channel.name =~ /hello/
+            event.bot.request_chunks(event.server.id.to_s)
+            user = event.user
+            user.pm(<<~HERE)
+              Hello, #{user.name}, in order to post or read #{event.server.name} messages you must be a certain role as well as submitted a form of ID with the server in question.
+              For #{event.server.name} that role is **#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}**
+              To do so, please send me a picture of your ID with everything but your 'date of birth' blacked out along with some sort of Discord™ proof (Your account page with the email blacked out or a handwritten Discord™ tag 
+                
+                For you that would be `#{event.user.distinct}`
+                When you do so, attach this message to the picture as a caption
+                `#{AgeBot::Configs::BotConfig.config.bot.prefix}verify #{event.server.id}`
+            HERE
+            sleep(5)
+            event.message.delete
+          end
         end
         command(:confirm, {
             help_available: false,
@@ -44,10 +43,12 @@ module AgeBot
           if HELPERS.can_confirm?(admin)
             if member.role?(AgeBot::Configs::ServerDB.db.servers[member.server.id.to_s].role)
               event.respond("#{member.distinct} already has the required role '#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}'")
+              event.channel.delete_message(message_id)
             else
               member.add_role(AgeBot::Configs::ServerDB.db.servers[member.server.id.to_s].role)
               event.channel.delete_message(message_id)
               event.respond("#{member.distinct} was confirmed to be a(n) #{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}")
+              event.user.pm("You've been confirmed for '#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}")
             end
           else
             raise AgeBot::Execeptions::NotConfirmableError.new(event)
@@ -83,7 +84,7 @@ module AgeBot
             usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}chunks"}) do |event|
           admin = event.server.member(event.author.id)
           if HELPERS.can_confirm?(admin)
-            event.bot.request_chunks(event.server.id)
+            event.bot.request_chunks(event.server.id.to_s)
           else
             raise AgeBot::Execeptions::NotConfirmableError.new(event)
           end
