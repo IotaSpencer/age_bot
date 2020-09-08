@@ -1,5 +1,6 @@
 require 'age_bot/exceptions/not_owner_error'
 require 'age_bot/helpers'
+require 'age_bot/logger'
 module AgeBot
   module Bot
     module DiscordCommands
@@ -24,7 +25,7 @@ module AgeBot
             For #{event.server.name} that role is **#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}**
             To do so, please send me a picture of your ID with everything but your 'date of birth' blacked out along with some sort of Discord™ proof (Your account page with the email blacked out or a handwritten Discord™ tag 
             
-            For you that would be `#{event.user.distinct}`
+            For you that would be `#{user.distinct}`
             When you do so, attach this message to the picture as a caption.
             `#{AgeBot::Configs::BotConfig.config.bot.prefix}verify #{event.server.id}`
           HEREDOC
