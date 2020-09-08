@@ -1,26 +1,38 @@
 # frozen_string_literal: true
-
+require 'age_bot/logger'
 module AgeBot
   module Bot
     module DiscordEvents
       module IDDM
         extend Discordrb::EventContainer
         pm do |event|
-          if !event.message.attachments.empty?
-            case
-            when event.message.content.start_with?("#{AgeBot::Configs::BotConfig.config.bot.prefix}verify")
-              user    = event.user
-              msg_obj = event.message.content.split(' ')
-              file    = event.message.attachments[0]
-              msg     = msg_obj
-              puts 'running verification on input for sanity'
-              puts "Checking #{event.message.content.split(' ')[1]} in ServerDB"
-              server_id = msg_obj[1]
+          user_tag = event.user.distinct
+          user     = event.user
+          msg_obj  = event.message.content.split(' ')
+          msg      = msg_obj
+
+          if event.message.content.start_with?("#{AgeBot::Configs::BotConfig.config.bot.prefix}verify")
+            if event.message.attachments.empty?
+              # User didn't send a file
+              # Tell us what they said
+              Logger.info ""
+            elsif event.message.attachments.length == 1
+              file = event.message.attachments[0]
+              Logger.info("running sanity checks on #{user.distinct}")
+              server_id = msg[1]
               begin
-                db           = AgeBot::Configs::ServerDB.db
-                channel      = AgeBot::Bot.bot.channel(db.servers[server_id].id_channel)
-                server       = AgeBot::Bot.bot.server(msg_obj[1])
-                member       = server.member(user.id, true)
+                Logger.debug 'loading DB'
+                db = AgeBot::Configs::ServerDB.db
+                Logger.debug 'loaded DB'
+                Logger.debug "Trying to find server for #{msg_obj[1]}"
+                server = AgeBot::Bot.bot.server(msg_obj[1])
+                Logger.debug "Found server. '#{server.name}' ID: #{server.id}"
+                Logger.debug "Trying to find verification channel to send to."
+                channel = AgeBot::Bot.bot.channel(db.servers[server_id].id_channel)
+                Logger.debug "Found channel. '#{channel.name}'"
+                Logger.debug "Trying to find member object on '#{server.name}' for '#{user_tag}'"
+                member = server.member(user.id, true)
+                Logger.debug "Found member. '#{member.nick}' on server '#{server.name}'"
                 sent_msg_obj = channel.send_message <<~HERE
                   #{file.url}
                   To add the 'Adult' role to this user, enter the following:
@@ -33,30 +45,35 @@ module AgeBot
                   `#{AgeBot::Configs::BotConfig.config.bot.prefix}reject $XXXXX$ "#{event.user.distinct}" "username is photoshopped in"`
                   or 
                   `#{AgeBot::Configs::BotConfig.config.bot.prefix}reject $XXXXX$ "#{event.user.distinct}" "user is not 18+"`
+                  or
+                  `#{AgeBot::Configs::BotConfig.config.bot.prefix}reject $XXXXX$ "#{event.user.distinct}" "XXXXX is needed as well as XXXXX in the same shot"`
+                  or 
+                  `#{AgeBot::Configs::BotConfig.config.bot.prefix}reject $XXXXX$ "#{event.user.distinct}" "XXXXX is needed see #id-example"`
 
-                  This reason will be sent to this user. So be nice and concise.
+                  The given reason will be sent to the user. So be nice and concise.
                 HERE
                 sent_msg_obj.edit(sent_msg_obj.content.gsub('$XXXXX$', "#{sent_msg_obj.id}"))
+                Logger.info "#{user.distinct} has sent what appears to be a verification."
                 user.pm("Your submission has been sent.")
-              rescue StandardError
-                event.respond("A bug has occured, please let my owner know (owner of https://discord.gg/nBB7K5y)")
+              rescue StandardError => e
+                event.respond("An exception has occured, please let my owner know (iotaspencer#0001)")
               ensure
+                Logger.debug 'Covering our backside'
                 user.pm("If you haven't received a message that your submission has been sent, let the admins of the applicable server know to contact the owner of this bot.")
               end
 
-            else
-              event.user.pm(<<~VERIFY)
-                Verifications are done using #{AgeBot::Configs::BotConfig.config.bot.prefix}verify <server id>"
-              VERIFY
+            elsif event.message.attachments.length > 1
+              event.user.pm(<<~HELLO)
+                If you are trying to verify on a server you and I are on, please send the message '#{AgeBot::Configs::BotConfig.config.bot.prefix}hello to the channel '#hello' on that server'
+              HELLO
             end
           else
-            puts <<~HERE
+            Logger.info <<~MESSAGE
               -----------------------------------------------
               Message from #{event.user.id}(#{event.user.distinct}) — #{event.timestamp}
               "#{event.message.content}"
-
               -----------------------------------------------
-            HERE
+            MESSAGE
           end
         end
       end
