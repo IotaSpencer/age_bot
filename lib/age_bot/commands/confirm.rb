@@ -49,7 +49,7 @@ module AgeBot
               member.add_role(AgeBot::Configs::ServerDB.db.servers[member.server.id.to_s].role)
               event.channel.delete_message(message_id)
               event.respond("#{member.distinct} was confirmed to be a(n) #{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}")
-              event.user.pm("You've been confirmed for '#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}")
+              member.pm("You've been confirmed for '#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}")
             end
           else
             raise AgeBot::Execeptions::NotConfirmableError.new(event)
