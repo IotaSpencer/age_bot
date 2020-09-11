@@ -8,10 +8,11 @@ module AgeBot
           if event.user.id == AgeBot::Configs::BotConfig.config.bot.owner.to_i
             Logger.warn 'Shutting down.'
             event.respond ":skull:"
+            event.bot.watching = "itself die..  💀"
+            sleep(5)
           else
             raise AgeBot::Execeptions::NotOwnerError.new(event)
           end
-          exec('clear')
           exit
         rescue
           event.respond ":negative_squared_cross_mark: | An error occurred"
