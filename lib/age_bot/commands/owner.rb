@@ -13,6 +13,7 @@ module AgeBot
           else
             raise AgeBot::Execeptions::NotOwnerError.new(event)
           end
+          event.bot.stop
           exit
         rescue
           event.respond ":negative_squared_cross_mark: | An error occurred"
