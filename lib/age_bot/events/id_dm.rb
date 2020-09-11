@@ -15,7 +15,12 @@ module AgeBot
             if event.message.attachments.empty?
               # User didn't send a file
               # Tell us what they said
-              Logger.info ""
+              Logger.info <<~MESSAGE
+                -----------------------------------------------
+                    Message from #{event.user.id}(#{event.user.distinct}) — #{event.timestamp}
+                "#{event.message.content}"
+                -----------------------------------------------
+              MESSAGE
             elsif event.message.attachments.length == 1
               file = event.message.attachments[0]
               Logger.info("running sanity checks on #{user.distinct}")
@@ -64,7 +69,14 @@ module AgeBot
 
             elsif event.message.attachments.length > 1
               event.user.pm(<<~HELLO)
-                If you are trying to verify on a server you and I are on, please send the message '#{AgeBot::Configs::BotConfig.config.bot.prefix}hello to the channel '#hello' on that server'
+                Hi, you're trying to send more than one photograph to me at a time.
+                Please only send one shot to me,
+                using the examples in the channel possibly called '#id-example'
+                
+
+                If you're **not** sending more than one photograph, this may be a bug.
+                If that's the case, please let my owner (iotaspencer#0001) know.
+
               HELLO
             end
           else
