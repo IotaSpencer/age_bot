@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require 'age_bot/helpers/server_helpers'
 module AgeBot
   module Bot
     class Helpers
+      include ServerHelpers
       # @param [Discordrb::Member] member a 'member' on a server
       def self.can_confirm?(member)
         results = []
@@ -27,12 +29,11 @@ module AgeBot
         AgeBot::Bot.bot.request_chunks(server)
         user = AgeBot::Bot.bot.find_user(username.fetch(:user), username.fetch(:discrim))
         srv = nil
-        case
-        when server.is_a?(Discordrb::Server)
+        if server.is_a?(Discordrb::Server)
           srv = server
-        when server.is_a?(String)
+        elsif server.is_a?(String)
           srv = AgeBot::Bot.bot.server(server)
-        when server.is_a?(Integer)
+        elsif server.is_a?(Integer)
           srv = AgeBot::Bot.bot.server(server.to_s)
         end
         Logger.debug "'server' was a '#{server.class}'"
@@ -46,14 +47,15 @@ module AgeBot
           event.bot.user(id)
         elsif /<@&(?<id>\d+)>/ =~ mention # Role Mention
           return server.role(id) if server
-          @servers.values.each do |element|
+
+          @servers.each_value do |element|
             role = element.role(id)
             return role unless role.nil?
           end
           # Return nil if no role is found
           nil
         elsif /<\#(?<id>\d+)>/ =~ mention # Channel Mention
-          return event.bot.channel(id.to_s)
+          event.bot.channel(id.to_s)
 
         elsif /<(?<animated>a)?:(?<name>\w+):(?<id>\d+)>/ =~ mention # Emoji Mention
           emoji(id) || Emoji.new({'animated' => !animated.nil?, 'name' => name, 'id' => id}, self, nil)

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'yell'
 require 'json'
 require 'paint'
@@ -9,11 +11,10 @@ module AgeBot
     @log_path = @cfg_dir.join('logs')
     @logger   = Yell.new(trace: true) do |l|
       l.level = :debug
-      l.adapter(STDOUT, level: (:debug..:fatal), format: "[%d] %l %f:%n — %m")
-      l.adapter(:datefile, "#{@log_path}/production.log", level: Yell.level.lte(:warn), format: "[%d] [%L] %f:%n — %m")
-      l.adapter(:datefile, "#{@log_path}/error.log", level: Yell.level.gte(:error), format: "[%d] [%L] %f:%n — %m")
+      l.adapter(STDOUT, level: (:debug..:fatal), format: '[%d] %l %f:%n — %m')
+      l.adapter(:datefile, "#{@log_path}/production.log", level: Yell.level.lte(:warn), format: '[%d] [%L] %f:%n — %m')
+      l.adapter(:datefile, "#{@log_path}/error.log", level: Yell.level.gte(:error), format: '[%d] [%L] %f:%n — %m')
     end
-
 
     %i[debug info warn error fatal].each do |m|
       Logger.define_singleton_method m do |msg|

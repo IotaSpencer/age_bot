@@ -7,4 +7,6 @@ gem "rest-client", '~> 2.1.0'
 gem 'tty-config', '~> 0.4.0'
 gem 'yell', '~> 2.2.2'
 gem 'rubocop', '~> 0.86.0', group: :development
+gem 'jekyll', '~> 4.1.1', group: :development
+gem 'rake', '~> 13.0.1'
 gemspec

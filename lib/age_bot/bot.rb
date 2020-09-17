@@ -4,11 +4,11 @@ module AgeBot
     attr_reader :bot
 
     @bot = Discordrb::Commands::CommandBot.new(
-        token:                  AgeBot::Configs::BotConfig.config.bot.token,
-        prefix:                 AgeBot::Configs::BotConfig.config.bot.prefix,
-        fancy_log:              true,
-        log_mode:               :normal,
-        advanced_functionality: true
+      token: AgeBot::Configs::BotConfig.config.bot.token,
+      prefix: AgeBot::Configs::BotConfig.config.bot.prefix,
+      fancy_log: true,
+      log_mode: :normal,
+      advanced_functionality: true
     )
     # Discord commands
     module DiscordCommands

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'age_bot/exceptions/not_owner_error'
 require 'age_bot/helpers'
 require 'age_bot/logger'
@@ -8,11 +10,11 @@ module AgeBot
       module FCom
         extend Discordrb::Commands::CommandContainer
         command(:fhello, {
-            max_args:    1,
-            min_args:    1,
-            description: "Force a #{AgeBot::Configs::BotConfig.config.bot.prefix}hello on a user",
-            usage:       "#{AgeBot::Configs::BotConfig.config.bot.prefix}fhello"
-        }) do |event, username|
+                  max_args: 1,
+                  min_args: 1,
+                  description: "Force a #{AgeBot::Configs::BotConfig.config.bot.prefix}hello on a user",
+                  usage: "#{AgeBot::Configs::BotConfig.config.bot.prefix}fhello"
+                }) do |event, username|
           Logger.debug 'Requesting Chunks'
           event.bot.request_chunks(event.server.id.to_s)
           Logger.debug 'Got Chunks'

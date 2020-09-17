@@ -10,7 +10,7 @@ module AgeBot
         command(:hello, {
             help_available: false,
             max_args:       0,
-            description:    "Get a message telling you to verify for a certain role.",
+            description:    'Get a message telling you how to verify for a certain role.',
             usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}hello"
         }) do |event|
           if event.channel.name =~ /hello/
@@ -33,8 +33,9 @@ module AgeBot
         command(:confirm, {
             help_available: false,
             min_args:       2,
-            description:    "Confirm a user to be a certain verifiable role.",
-            usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}confirm <message_id> <NAME#0000>"}) do |event, message_id, user|
+            description:    'Confirm a user to be a certain verifiable role.',
+            usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}confirm <message_id> <NAME#0000>"
+        }) do |event, message_id, user|
           admin        = event.server.member(event.user.id)
           user_name    = user.split('#')[0]
           user_discrim = user.split('#')[1]
@@ -59,10 +60,10 @@ module AgeBot
         command(:reject, {
             help_available: false,
             min_args:       3,
-            description:    "Reject that a user is eligible for the certain role based on a reason",
-            usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}reject <message_id> <\"NAME#0000\"> <\"reason...\">"}) do |event, message_id, user, *reason|
-          admin                   = event.server.member(event.author.id)
-          user_name, user_discrim = *user.split('#')
+            description:    'Reject that a user is eligible for the certain role based on a reason',
+            usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}reject <message_id> <\"NAME#0000\"> <\"reason...\">"
+        }) do |event, message_id, user, *reason|
+          admin = event.server.member(event.author.id)
           event.bot.request_chunks(event.server.id.to_s)
           user = AgeBot::Bot::Helpers.member_from_tag(event.server, user)
           if HELPERS.can_confirm?(admin)
@@ -81,14 +82,13 @@ module AgeBot
         command(:chunks, {
             help_available: true,
             max_args:       0,
-            description:    "Request member chunks for the current server",
-            usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}chunks"}) do |event|
+            description:    'Request member chunks for the current server',
+            usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}chunks"
+        }) do |event|
           admin = event.server.member(event.author.id)
-          if HELPERS.can_confirm?(admin)
-            event.bot.request_chunks(event.server.id.to_s)
-          else
-            raise AgeBot::Execeptions::NotConfirmableError.new(event)
-          end
+          raise AgeBot::Execeptions::NotConfirmableError.new(event) unless HELPERS.can_confirm?(admin)
+          event.bot.request_chunks(event.server.id.to_s)
+        
         end
       end
     end

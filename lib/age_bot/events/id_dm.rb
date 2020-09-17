@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'age_bot/logger'
 module AgeBot
   module Bot
@@ -32,7 +33,7 @@ module AgeBot
                 Logger.debug "Trying to find server for #{msg_obj[1]}"
                 server = AgeBot::Bot.bot.server(msg_obj[1])
                 Logger.debug "Found server. '#{server.name}' ID: #{server.id}"
-                Logger.debug "Trying to find verification channel to send to."
+                Logger.debug 'Trying to find verification channel to send to.'
                 channel = AgeBot::Bot.bot.channel(db.servers[server_id].id_channel)
                 Logger.debug "Found channel. '#{channel.name}'"
                 Logger.debug "Trying to find member object on '#{server.name}' for '#{user_tag}'"
@@ -59,9 +60,9 @@ module AgeBot
                 HERE
                 sent_msg_obj.edit(sent_msg_obj.content.gsub('$XXXXX$', "#{sent_msg_obj.id}"))
                 Logger.info "#{user.distinct} has sent what appears to be a verification."
-                user.pm("Your submission has been sent.")
+                user.pm('Your submission has been sent.')
               rescue StandardError => e
-                event.respond("An exception has occured, please let my owner know (iotaspencer#0001)")
+                event.respond('An exception has occured, please let my owner know (iotaspencer#0001)')
               ensure
                 Logger.debug 'Covering our backside'
                 user.pm("If you haven't received a message that your submission has been sent, let the admins of the applicable server know to contact the owner of this bot.")

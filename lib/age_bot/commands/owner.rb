@@ -3,7 +3,15 @@ module AgeBot
   module Bot
     module DiscordCommands
       module Owner
+        HELPERS = AgeBot::Bot::Helpers
         extend Discordrb::Commands::CommandContainer
+        command(:servers) do |event|
+          servers = event.bot.servers
+          embeds  = HELPERS.make_server_embeds(servers)
+          embeds.each do |embed|
+            event.respond('', false, embed)
+          end
+        end
         command(:shutdown, help_available: false, aliases: [:k]) do |event|
           if event.user.id == AgeBot::Configs::BotConfig.config.bot.owner.to_i
             Logger.warn 'Shutting down.'
