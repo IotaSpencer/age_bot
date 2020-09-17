@@ -11,6 +11,7 @@ module AgeBot
         command(:getmembers) do |event|
           admin = event.user
           raise NotConfirmableError.new(event) unless HELPERS.can_confirm?(admin)
+          
         end
       end
     end

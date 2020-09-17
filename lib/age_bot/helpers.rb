@@ -65,7 +65,7 @@ module AgeBot
         server  = event.server
         members = server.members
         members.each do |member|
-
+          
         end
       end
 

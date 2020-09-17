@@ -1,6 +1,8 @@
 require 'discordrb'
+require 'age_bot/scheduler'
 module AgeBot
   module Bot
+
     attr_reader :bot
 
     @bot = Discordrb::Commands::CommandBot.new(
