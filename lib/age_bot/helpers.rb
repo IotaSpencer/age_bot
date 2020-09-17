@@ -82,6 +82,7 @@ module AgeBot
 
       # @param [Hash{String => Discordrb::Server}] servers the list of servers the bot is in
       def self.make_server_embeds(servers)
+        embeds = []
         servers.each do |server_id, server_data|
           embeds << Discordrb::Webhooks::Builder.new.add_embed do |embed|
             embed.title = server_id
