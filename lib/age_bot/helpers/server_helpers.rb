@@ -13,7 +13,7 @@ module AgeBot
         end
 
         # @param [Discordrb::Server] server A discord server instance
-        def get_server_data(server)
+        def self.get_server_data(server)
           member_count = server.member_count
           sowner       = server.owner
           sowner_name  = sowner.display_name
@@ -24,7 +24,7 @@ module AgeBot
         end
 
         # @param [Hash{String => Discordrb::Server}] servers the list of servers the bot is in
-        def make_server_embeds(servers)
+        def self.make_server_embeds(servers)
           servers.each do |server_id, server_data|
             embeds << Discordrb::Webhooks::Builder.new.add_embed do |embed|
               embed.title = server_id
