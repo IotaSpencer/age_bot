@@ -92,7 +92,7 @@ module AgeBot
             embed.add_field(name: "Server Owner Distinct:", value: server_data.owner.distinct, inline: true)
             embed.add_field(name: "Server Owner ID:", value: server_data.owner.id, inline: true)
             embed.add_field(name: "Large?:", value: server_data.large? ? 'yes' : 'no', inline: true)
-            embed.add_field(name: "In ServerDB?:", value: AgeBot::Configs::ServerDB.db.servers.to_h.has_key?(server_id.to_s) ? 'yes' : 'no')
+            embed.add_field(name: "In ServerDB?:", value: AgeBot::Configs::ServerDB.db.servers.to_h.has_key?(server_id) ? 'yes' : 'no')
           end
         end
         embeds
