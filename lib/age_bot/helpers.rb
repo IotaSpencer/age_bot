@@ -86,13 +86,13 @@ module AgeBot
         servers.each do |server_id, server_data|
           embeds << Discordrb::Webhooks::Builder.new.add_embed do |embed|
             embed.title = server_id
-            embed.add_field(name: "Server Name:", value: server_data.name)
-            embed.add_field(name: "Member Count:", value: server_data.member_count.to_s)
-            embed.add_field(name: "Server Owner NickName:", value: server_data.owner.on(server_id).display_name)
-            embed.add_field(name: "Server Owner Distinct:", value: server_data.owner.distinct)
-            embed.add_field(name: "Server Owner ID:", value: server_data.owner.id)
-            embed.add_field(name: "Large?:", value: server_data.large? ? 'yes' : 'no')
-            embed.add_field(name: "In ServerDB?:", value: AgeBot::Configs::ServerDB.db.servers.to_h.has_key?(server_id) ? 'yes' : 'no')
+            embed.add_field(name: "Server Name:", value: server_data.name, inline: true)
+            embed.add_field(name: "Member Count:", value: server_data.member_count.to_s, inline: true)
+            embed.add_field(name: "Server Owner NickName:", value: server_data.owner.on(server_id).display_name, inline: true)
+            embed.add_field(name: "Server Owner Distinct:", value: server_data.owner.distinct, inline: true)
+            embed.add_field(name: "Server Owner ID:", value: server_data.owner.id, inline: true)
+            embed.add_field(name: "Large?:", value: server_data.large? ? 'yes' : 'no', inline: true)
+            embed.add_field(name: "In ServerDB?:", value: AgeBot::Configs::ServerDB.db.servers.to_h.has_key?(server_id.to_sym) ? 'yes' : 'no')
           end
         end
         embeds
