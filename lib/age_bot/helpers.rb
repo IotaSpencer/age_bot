@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require 'discordrb/webhooks/builder'
-require 'age_bot/helpers/server_helpers'
 module AgeBot
   module Bot
     class Helpers
