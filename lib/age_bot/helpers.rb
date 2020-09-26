@@ -1,8 +1,18 @@
 # frozen_string_literal: true
+require 'open-uri'
 require 'discordrb/webhooks/builder'
 module AgeBot
   module Bot
     class Helpers
+      # Open a url/uri and read the contents
+      # @param [String] url link to open and read
+      # @return [String] the contents of url's file
+      def self.open_uri(url)
+        URI.parse(url) do |f|
+          f.read
+        end
+      end
+
       # @param [Discordrb::Member] member a 'member' on a server
       def self.can_confirm?(member)
         results = []
