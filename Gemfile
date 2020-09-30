@@ -2,9 +2,6 @@ source 'https://rubygems.org'
 #
 # /usr/lib/ruby/vendor_ruby/rubygems/defaults/operating_system.rb:10: warning: constant Gem::ConfigMap is deprecated
 #
-gem 'warning'
-Warning.ignore(/.*Gem::ConfigMap is deprecated.*/, /.*operating_system.rb.*/)
-
 gem 'discordrb', '~> 3.3.0'
 gem 'recursive-open-struct', '~> 1.1.0'
 gem "json"
