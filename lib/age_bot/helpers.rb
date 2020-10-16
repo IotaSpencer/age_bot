@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 require 'open-uri'
 require 'discordrb/webhooks/builder'
+
+# Require all the helper files
+require 'age_bot/helpers/audit_log_helper'
+
 module AgeBot
   module Bot
     class Helpers

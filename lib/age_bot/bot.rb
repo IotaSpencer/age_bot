@@ -44,10 +44,16 @@ module AgeBot
     module_function
 
     def self.start
-      @bot.run
+      @bot.run(true)
     rescue Interrupt
       @bot.stop
     end
+
+    def self.stop
+      @bot.stop
+    end
+
+    alias_method :shutdown, :stop
 
     def self.bot
       @bot
