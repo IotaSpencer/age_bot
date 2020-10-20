@@ -5,7 +5,7 @@ module AgeBot
     module DiscordCommands
       # Confirm the age using a command
       module ConfirmAge
-        HELPERS = AgeBot::Bot::Helpers
+        HELPERS = AgeBot::Helpers::Discord
         extend Discordrb::Commands::CommandContainer
         command(:hello, {
             help_available: false,

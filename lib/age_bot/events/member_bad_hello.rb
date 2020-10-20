@@ -8,7 +8,7 @@ module AgeBot
         message do |event|
           if event.channel.name =~ /hello/
             # #hello has been sent a message
-            if AgeBot::Bot::Helpers.parse_mention(event.content, event.server, event: event)&.name =~ /\#?hello/
+            if AgeBot::Helpers::Discord.parse_mention(event.content, event.server, event: event)&.name =~ /\#hello/
               # message was '#hello' or mention of #hello
               user = event.author
               begin
