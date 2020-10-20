@@ -1,22 +1,6 @@
-# frozen_string_literal: true
-require 'open-uri'
-require 'discordrb/webhooks/builder'
-
-# Require all the helper files
-require 'age_bot/helpers/audit_log_helper'
-
 module AgeBot
-  module Bot
-    class Helpers
-      # Open a url/uri and read the contents
-      # @param [String] url link to open and read
-      # @return [String] the contents of url's file
-      def self.open_uri(url)
-        URI.parse(url) do |f|
-          f.read
-        end
-      end
-
+  module Helpers
+    class Discord
       # @param [Discordrb::Member] member a 'member' on a server
       def self.can_confirm?(member)
         results = []
@@ -28,19 +12,19 @@ module AgeBot
 
       # grab username from tag simply
       # @param [String] tag
-
       def self.parse_tag(tag)
         user, discrim = *tag.split('#')
         {user: user, discrim: discrim}
       end
 
-      # @param [Discordrb::Server,String,Integer] server the discord server/guild
+      # grab member from tag
+      # @param [Discordrb::Server] server the discord server/guild
       # @param [String] tag the discord NAME#0000
       def self.member_from_tag(server, tag)
         username = parse_tag(tag)
         AgeBot::Bot.bot.request_chunks(server)
         user = AgeBot::Bot.bot.find_user(username.fetch(:user), username.fetch(:discrim))
-        srv = nil
+        srv  = nil
         if server.is_a?(Discordrb::Server)
           srv = server
         elsif server.is_a?(String)
@@ -79,7 +63,7 @@ module AgeBot
         server  = event.server
         members = server.members
         members.each do |member|
-          
+
         end
       end
 

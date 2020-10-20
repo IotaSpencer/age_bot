@@ -8,7 +8,7 @@ module AgeBot
         command(:ping) do |event, *code|
           if event.user.id == AgeBot::Configs::BotConfig.config.bot.owner.to_i
             begin
-              event.respond("Pong! #{eval(code)}")
+              event.respond("Pong! #{eval(code.join(' '))}")
             rescue StandardError => e
               event.respond("Pong! (Code has errored, see logs)")
               AgeBot::Logger.error(<<~ERROR)

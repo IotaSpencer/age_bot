@@ -64,7 +64,7 @@ module AgeBot
               rescue StandardError => e
                 event.respond('An exception has occured, please let my owner know (iotaspencer#0001)')
               ensure
-                Logger.debug 'Covering our backside'
+                Logger.debug 'Making sure we sent our message.'
                 user.pm("If you haven't received a message that your submission has been sent, let the admins of the applicable server know to contact the owner of this bot.")
               end
 

@@ -49,6 +49,12 @@ module AgeBot
       @bot.stop
     end
 
+    def self.stop
+      @bot.stop
+    end
+
+    alias_method :shutdown, :stop
+
     def self.bot
       @bot
     end
