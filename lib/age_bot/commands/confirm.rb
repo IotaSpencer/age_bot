@@ -71,7 +71,7 @@ module AgeBot
         }) do |event, message_id, user, *reason|
           admin = event.server.member(event.author.id)
           event.bot.request_chunks(event.server.id.to_s)
-          user = AgeBot::Bot::Helpers.member_from_tag(event.server, user)
+          user = HELPERS.member_from_tag(event.server, user)
           if HELPERS.can_confirm?(admin)
             channel = event.channel
             begin
