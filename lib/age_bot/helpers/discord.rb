@@ -32,7 +32,7 @@ module AgeBot
         elsif server.is_a?(Integer)
           srv = AgeBot::Bot.bot.server(server.to_s)
         end
-        Logger.debug "'server' was a '#{server.class}'"
+        Logger.debug "'server' was a '#{srv.class}'"
         nil if srv.nil?
         srv.member(AgeBot::Bot.bot.find_user(username[:user], username[:discrim]).id.to_s, true)
       end

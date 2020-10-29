@@ -19,7 +19,7 @@ module AgeBot
           event.bot.request_chunks(event.server.id.to_s)
           Logger.debug 'Got Chunks'
           Logger.debug 'Parsing Tag'
-          user = AgeBot::Bot::Helpers.member_from_tag(event.server, username)
+          user = AgeBot::Helpers::Discord.member_from_tag(event.server, username)
           Logger.debug 'Tag parsed.'
           Logger.debug 'DM\'ing user'
           user.pm(<<~HEREDOC)
