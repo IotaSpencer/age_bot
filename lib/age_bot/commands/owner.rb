@@ -4,10 +4,11 @@ module AgeBot
     module DiscordCommands
       module Owner
         HELPERS = AgeBot::Bot::Helpers
+        DHELPERS = AgeBot::Helpers::Discord
         extend Discordrb::Commands::CommandContainer
         command(:servers) do |event|
           servers = event.bot.servers
-          embeds  = HELPERS.make_server_embeds(servers)
+          embeds = DHELPERS.make_server_embeds(servers)
           embeds.each do |embed|
             event.respond('', false, embed)
           end
