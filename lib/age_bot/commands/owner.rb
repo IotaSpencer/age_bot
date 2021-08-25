@@ -56,16 +56,16 @@ module AgeBot
         end
         command(:eval) do |event, *code|
           if event.user.id == AgeBot::Configs::BotConfig.config.bot.owner.to_i
-            if code.start_with?('```ruby') and code.end_with?('```')
+            if code.join(' ').start_with?('```ruby') and code.join(' ').end_with?('```') # Check for code style
               code_string = event.content.gsub("```ruby", '').gsub("```", '')
               eval code_string
-            elsif event.message.attachments.length == 1 and event.message.attachments.first.filename =~ /[A-Za-z0-9\-_]+\.rb/
+            elsif event.message.attachments.length == 1 and event.message.attachments.first.filename =~ /[A-Za-z0-9\-_]+\.rb/ # Eval a rb file
               code_file = HELPERS.open_uri(event.message.attachments.first.url)
               eval(code_file)
-            elsif event.message.attachments.length > 1
+            elsif event.message.attachments.length > 1 # Files attached should be <= 1
               event.respond("Only 1 file is to be attached.")
             else
-
+              # If all else fails just try and eval the text given
               eval code.join(' ')
             end
 
