@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 #
 # /usr/lib/ruby/vendor_ruby/rubygems/defaults/operating_system.rb:10: warning: constant Gem::ConfigMap is deprecated
 #
-gem 'discordrb', github: 'shardlab/discordrb', branch: 'master'
+gem 'discordrb', github: 'shardlab/discordrb', branch: 'main'
 gem 'recursive-open-struct', '~> 1.1.0'
 gem "json"
 gem 'paint', '~> 2.2.0'
