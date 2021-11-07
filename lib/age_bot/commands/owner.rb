@@ -17,7 +17,7 @@ module AgeBot
           if event.user.id == AgeBot::Configs::BotConfig.config.bot.owner.to_i
             Logger.warn 'Shutting down.'
             event.respond ":skull:"
-            event.bot.watching = "itself die..  💀"
+            event.bot.watching = "dying inside..  💀"
             sleep(5)
           else
             raise AgeBot::Execeptions::NotOwnerError.new(event)
