@@ -4,11 +4,22 @@ module AgeBot
   module Bot
 
     attr_reader :bot
-
+    prefix_proc = proc do |message|
+      # Extract the first word and the rest of the message,
+      # and ignore the message if it doesn't start with "!":
+      match = /^\\&(\w+)(.*)/.match(message.content)
+      if match
+        first = match[1]
+        rest = match[2]
+        # Return the modified string with the first word lowercase:
+        "#{first.downcase}#{rest}"
+      end
+    end
     @bot = Discordrb::Commands::CommandBot.new(
       token: AgeBot::Configs::BotConfig.config.bot.token,
       prefix: AgeBot::Configs::BotConfig.config.bot.prefix,
       fancy_log: true,
+      prefix_proc: prefix_proc,
       log_mode: :normal,
       advanced_functionality: true
     )
