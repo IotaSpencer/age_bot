@@ -19,7 +19,7 @@ module AgeBot
       token: AgeBot::Configs::BotConfig.config.bot.token,
       prefix: prefix_proc,
       fancy_log: true,
-      log_mode: :verbose,
+      log_mode: :normal,
       advanced_functionality: true
     )
     # Discord commands
