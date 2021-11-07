@@ -7,7 +7,7 @@ module AgeBot
     prefix_proc = proc do |message|
       # Extract the first word and the rest of the message,
       # and ignore the message if it doesn't start with "!":
-      match = /^\\&(\w+)(.*)/.match(message.content)
+      match = /^&(\w+)(.*)/.match(message.content)
       if match
         first = match[1]
         rest = match[2]
@@ -19,7 +19,7 @@ module AgeBot
       token: AgeBot::Configs::BotConfig.config.bot.token,
       prefix: prefix_proc,
       fancy_log: true,
-      log_mode: :normal,
+      log_mode: :verbose,
       advanced_functionality: true
     )
     # Discord commands
