@@ -22,7 +22,8 @@ module AgeBot
       log_mode: :normal,
       advanced_functionality: true,
       compress_mode: :stream,
-      intents: :all
+      intents: :all,
+      help_command: false
     )
     # Discord commands
     module DiscordCommands
