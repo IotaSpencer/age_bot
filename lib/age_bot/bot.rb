@@ -23,7 +23,10 @@ module AgeBot
       advanced_functionality: true,
       compress_mode: :stream,
       intents: :all,
-      help_command: false
+      help_command: false,
+      chain_delimiter: '',
+      quote_end: '',
+      quote_start: ''
     )
     # Discord commands
     module DiscordCommands
