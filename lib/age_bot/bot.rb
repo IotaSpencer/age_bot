@@ -20,7 +20,9 @@ module AgeBot
       prefix: prefix_proc,
       fancy_log: true,
       log_mode: :normal,
-      advanced_functionality: true
+      advanced_functionality: true,
+      compress_mode: :stream,
+      intents: :all
     )
     # Discord commands
     module DiscordCommands
@@ -53,17 +55,27 @@ module AgeBot
 
     module_function
 
-    def self.start
-      @bot.run
-    rescue Interrupt
+    Signal.trap('TERM') do
+      @bot.watching = 'itself die... :skull:'
       @bot.stop
     end
 
-    def self.stop
+    def self.start(bg = true)
+      @bot.run(bg)
+      @bot.join
+    rescue Interrupt # Restart
+      @bot.debug 'Restarting?'
+      @bot.watching = 'itself reincarnate'
       @bot.stop
+      @bot.run(bg)
+    rescue
     end
 
-    def shutdown
+    def shutdown_gracefully
+      @bot.watching = 'itself die... :skull:'
+      @bot.debug 'Beginning a shutdown loop'
+      @bot.debug 'Shutting down... '
+      sleep(60)
       @bot.stop
     end
 
