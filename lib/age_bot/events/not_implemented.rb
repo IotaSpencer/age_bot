@@ -31,7 +31,6 @@ module AgeBot
               event.respond("")
             end
           end
-
         end
       end
     end

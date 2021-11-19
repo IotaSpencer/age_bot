@@ -75,7 +75,7 @@ module AgeBot
     rescue
     end
 
-    def shutdown_gracefully
+    def self.shutdown_gracefully
       @bot.watching = 'itself die... :skull:'
       @bot.debug 'Beginning a shutdown loop'
       @bot.debug 'Shutting down... '
