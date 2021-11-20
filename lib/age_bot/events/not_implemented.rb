@@ -28,7 +28,7 @@ module AgeBot
             channel = event.channel
             dm_indi = event.server.nil?
             if dm_indi == true
-              event.respond("")
+              nil
             else
               event.respond("#{user.mention}: You do that in a private message to the bot, not to this channel.")
               !event.message.attachments.empty? ? event.respond("Also do not send your ID+tag to this public channel") : nil
