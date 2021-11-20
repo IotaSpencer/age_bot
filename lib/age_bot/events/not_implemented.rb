@@ -35,7 +35,6 @@ module AgeBot
             end
             when !channel.nil?
           end
-
         end
       end
     end
