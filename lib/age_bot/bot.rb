@@ -19,7 +19,7 @@ module AgeBot
       token: AgeBot::Configs::BotConfig.config.bot.token,
       prefix: prefix_proc,
       fancy_log: true,
-      log_mode: :normal,
+      log_mode: :debug,
       advanced_functionality: true,
       compress_mode: :stream,
       intents: :all,
@@ -39,8 +39,8 @@ module AgeBot
       @bot.debug "Loaded Command file: #{file}"
     end
     DiscordCommands.constants.each do |file|
-      @bot.debug "Included Command file #{file}"
       @bot.include! DiscordCommands.const_get file
+      @bot.debug "Included Command file #{file}"
     end
 
     # Discord events
