@@ -25,6 +25,10 @@ module AgeBot
       intents: :all,
       help_command: false,
       chain_delimiter: '',
+      chain_args_delim: '',
+      previous: '',
+      sub_chain_end: '',
+      sub_chain_start: '',
       quote_end: '',
       quote_start: ''
     )

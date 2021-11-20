@@ -1,4 +1,5 @@
 require 'age_bot/exceptions/not_owner_error'
+require 'discordrb'
 module AgeBot
   module Bot
     module DiscordCommands
@@ -70,7 +71,7 @@ module AgeBot
             end
 
           else
-            raise AgeBot::Execeptions::NotOwnerError.new(event)
+            raise AgeBot::Exceptions::NotOwnerError.new(event)
           end
         end
       end
