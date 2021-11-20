@@ -10,7 +10,7 @@ module AgeBot
           user_tag = event.user.distinct
           user = event.user
           msg_obj = event.message.content.split(' ')
-          msg = msg_obj
+          msg = msg_obj.join(' ')
           channel = event.bot.parse_mention(msg, event.server&.id ? event.server.id : nil) || nil
 
           if msg
