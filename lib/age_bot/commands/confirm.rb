@@ -49,7 +49,7 @@ module AgeBot
           user_id = event.bot.find_user(user_name, user_discrim)
           member = event.server.member(user_id)
           if HELPERS.can_confirm?(admin)
-            if member.role?(AgeBot::Configs::ServerDB.db.servers[member.server.id.to_s].role)
+            if member.role?(AgeBot::Configs::ServerDB.db.servers[member.server.id.to_s.to_sym].role)
               event.respond("#{member.distinct} already has the required role '#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}'")
               event.channel.delete_message(message_id)
             else
