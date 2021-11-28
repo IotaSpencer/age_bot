@@ -14,6 +14,7 @@ module AgeBot
 
       # grab username from tag simply
       # @param [String] tag
+      # @return [Hash]
       def self.parse_tag(tag)
         user, discrim = *tag.split('#')
         { user: user, discrim: discrim }
@@ -21,7 +22,7 @@ module AgeBot
 
       # grab member from tag
       # @param [Discordrb::Server] server the discord server/guild
-      # @param [tag] tag User Object
+      # @param [Hash] tag User Object
       def self.member_from_tag(server, user)
         AgeBot::Bot.bot.request_chunks(server)
         username = self.parse_tag(user)

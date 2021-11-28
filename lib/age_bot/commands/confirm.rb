@@ -43,11 +43,8 @@ module AgeBot
             usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}confirm <message_id> <NAME#0000>"
         }) do |event, message_id, user|
           admin = event.server.member(event.user.id)
-          user_name = user.split('#')[0]
-          user_discrim = user.split('#')[1]
           event.bot.request_chunks(event.server.id)
-          user_id = event.bot.find_user(user_name, user_discrim)
-          member = HELPERS.member_from_tag(event.server, user_id)
+          member = HELPERS.member_from_tag(event.server, user)
           if HELPERS.can_confirm?(admin)
             if member.role?(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s.to_sym].role)
               event.respond("#{member.distinct} already has the required role '#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}'")
