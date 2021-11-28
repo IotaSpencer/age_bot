@@ -21,10 +21,10 @@ module AgeBot
 
       # grab member from tag
       # @param [Discordrb::Server] server the discord server/guild
-      # @param [Discordrb::User] user User Object
-      def self.member_from_cache(server, user)
+      # @param [tag] tag User Object
+      def self.member_from_tag(server, user)
         AgeBot::Bot.bot.request_chunks(server)
-        member = AgeBot::Bot.bot.find_user(username.fetch(:user), username.fetch(:discrim))
+        username = self.parse_tag(user)
         srv = nil
         if server.is_a?(Discordrb::Server)
           srv = server
@@ -32,6 +32,8 @@ module AgeBot
           srv = AgeBot::Bot.bot.server(server)
         elsif server.is_a?(Integer)
           srv = AgeBot::Bot.bot.server(server.to_s)
+        else
+          Logger.debug "'server' was neither String, Integer, or Discordrb::Server"
         end
         Logger.debug "'server' was a '#{srv.class}'"
         nil if srv.nil?

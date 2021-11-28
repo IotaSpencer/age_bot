@@ -47,7 +47,7 @@ module AgeBot
           user_discrim = user.split('#')[1]
           event.bot.request_chunks(event.server.id)
           user_id = event.bot.find_user(user_name, user_discrim)
-          member = event.server.member(user_id)
+          member = HELPERS.member_from_tag(event.server, user_id)
           if HELPERS.can_confirm?(admin)
             if member.role?(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s.to_sym].role)
               event.respond("#{member.distinct} already has the required role '#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}'")

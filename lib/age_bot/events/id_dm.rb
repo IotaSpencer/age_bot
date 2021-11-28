@@ -34,7 +34,7 @@ module AgeBot
                 server = AgeBot::Bot.bot.server(msg_obj[1])
                 Logger.debug "Found server. '#{server.name}' ID: #{server.id}"
                 Logger.debug 'Trying to find verification channel to send to.'
-                channel = AgeBot::Bot.bot.channel(db.servers[server_id].id_channel)
+                channel = AgeBot::Bot.bot.channel(db.servers[server_id.to_s.to_sym].verify_channel)
                 Logger.debug "Found channel. '#{channel.name}'"
                 Logger.debug "Trying to find member object on '#{server.name}' for '#{user_tag}'"
                 member = server.member(user.id, true)
