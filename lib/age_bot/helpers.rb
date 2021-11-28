@@ -9,7 +9,7 @@ require 'age_bot/helpers/discord'
 module AgeBot
   module Helpers
     # Discord Helper Methods
-    module Discord
+    class Discord
 
     end
   end
