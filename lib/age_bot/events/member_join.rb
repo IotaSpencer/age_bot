@@ -1,10 +1,13 @@
+require 'age_bot/helpers/discord'
 module AgeBot
   module Bot
     module DiscordEvents
       module MemberJoin
+        HLPRS = AgeBot::Helpers::Discord
         extend Discordrb::EventContainer
         member_join do |event|
           user = event.user
+
           sleep 5
           begin
             user.pm(<<~HERE)

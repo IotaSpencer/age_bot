@@ -42,12 +42,12 @@ module AgeBot
             description:    'Confirm a user to be a certain verifiable role.',
             usage:          "#{AgeBot::Configs::BotConfig.config.bot.prefix}confirm <message_id> <NAME#0000>"
         }) do |event, message_id, user|
-          admin        = event.server.member(event.user.id)
-          user_name    = user.split('#')[0]
+          admin = event.server.member(event.user.id)
+          user_name = user.split('#')[0]
           user_discrim = user.split('#')[1]
-          event.bot.request_chunks(event.server.id.to_s)
-          user_id = event.bot.find_user(user_name, user_discrim).id
-          member  = event.server.member(user_id)
+          event.bot.request_chunks(event.server.id)
+          user_id = event.bot.find_user(user_name, user_discrim)
+          member = event.server.member(user_id)
           if HELPERS.can_confirm?(admin)
             if member.role?(AgeBot::Configs::ServerDB.db.servers[member.server.id.to_s].role)
               event.respond("#{member.distinct} already has the required role '#{event.server.role(AgeBot::Configs::ServerDB.db.servers[event.server.id.to_s].role).name}'")

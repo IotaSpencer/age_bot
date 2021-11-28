@@ -7,7 +7,14 @@ require 'age_bot/helpers/audit_log_helper'
 require 'age_bot/helpers/discord'
 
 module AgeBot
+  module Helpers
+    # Discord Helper Methods
+    module Discord
+
+    end
+  end
   module Bot
+    # Bot Helper Methods
     class Helpers
       # Open a url/uri and read the contents
       # @param [String] url link to open and read

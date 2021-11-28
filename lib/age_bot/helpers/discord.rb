@@ -1,7 +1,9 @@
+require 'age_bot/logger'
 module AgeBot
   module Helpers
     class Discord
       # @param [Discordrb::Member] member a 'member' on a server
+      # @return [Array<Discordrb::Member>]
       def self.can_confirm?(member)
         results = []
         AgeBot::Configs::ServerDB.db.servers[member.server.id.to_s].can_confirm.each do |hsh|
@@ -14,17 +16,16 @@ module AgeBot
       # @param [String] tag
       def self.parse_tag(tag)
         user, discrim = *tag.split('#')
-        {user: user, discrim: discrim}
+        { user: user, discrim: discrim }
       end
 
       # grab member from tag
       # @param [Discordrb::Server] server the discord server/guild
-      # @param [String] tag the discord NAME#0000
-      def self.member_from_tag(server, tag)
-        username = parse_tag(tag)
+      # @param [Discordrb::User] user User Object
+      def self.member_from_cache(server, user)
         AgeBot::Bot.bot.request_chunks(server)
-        user = AgeBot::Bot.bot.find_user(username.fetch(:user), username.fetch(:discrim))
-        srv  = nil
+        member = AgeBot::Bot.bot.find_user(username.fetch(:user), username.fetch(:discrim))
+        srv = nil
         if server.is_a?(Discordrb::Server)
           srv = server
         elsif server.is_a?(String)
@@ -37,48 +38,62 @@ module AgeBot
         srv.member(AgeBot::Bot.bot.find_user(username[:user], username[:discrim]).id.to_s, true)
       end
 
-      def self.parse_mention(mention, server = nil, event: nil)
-        # Mention format: <@id>
-        if /<@!?(?<id>\d+)>/ =~ mention # NickName Mention
-          event.bot.user(id)
-        elsif /<@&(?<id>\d+)>/ =~ mention # Role Mention
-          return server.role(id) if server
-
-          @servers.each_value do |element|
-            role = element.role(id)
-            return role unless role.nil?
-          end
-          # Return nil if no role is found
-          nil
-        elsif /<\#(?<id>\d+)>/ =~ mention # Channel Mention
-          event.bot.channel(id.to_s)
-
-        elsif /<(?<animated>a)?:(?<name>\w+):(?<id>\d+)>/ =~ mention # Emoji Mention
-          emoji(id) || Emoji.new({'animated' => !animated.nil?, 'name' => name, 'id' => id}, self, nil)
-        end
-      end
-
-      # @param [Discordrb::Event] event a discord event to grab information from
-      def self.get_members(event)
-        server  = event.server
+      # @param [Discordrb::Server] server a discord server to grab information from
+      def self.get_members(server)
+        server = event.server
         members = server.members
         members.each do |member|
 
         end
       end
 
+      # @param [Discordrb::Events::ServerMemberAddEvent,Discordrb::Events::PrivateMessageEvent] event the event object
+      # @param [Integer,Discordrb::Server] server Discord Server/Guild Object/ID
+      # @return [Discordrb::Member] if server is not nil
+      # @return [Discordrb::User] if server is nil
+      def self.cache_member_from_event(event, server: nil)
+        member = nil
+        user = event.user
+        user_id = user.id
+        user_name = user.username
+        user_a_id = user.avatar_id
+        user_discrim = user.discrim
+        cached_user = event.bot.ensure_user({
+                                              'id' => user_id,
+                                              'username' => user_name,
+                                              'avatar_id' => user_a_id,
+                                              'discriminator' => user_discrim
+                                            })
+        Logger.debug("Cached a user")
+        Logger.debug("#{cached_user.inspect}")
+        if server
+          if server.is_a?(Integer)
+            member = event.bot.server(server).member(user_id, true)
+          elsif server.is_a?(Discordrb::Server)
+            member = server.member(user_id, true)
+          end
+
+        end
+        if member
+          member
+        else
+          cached_user
+        end
+      end
+
       # @param [Discordrb::Server] server A discord server instance
+      # @return [NilClass]
       def self.get_server_data(server)
         member_count = server.member_count
-        sowner       = server.owner
-        sowner_name  = sowner.display_name
-        sowner_id    = sowner.id
-        name         = server.name
-        server_id    = server.id
+        sowner = server.owner
+        sowner_name = sowner.display_name
+        sowner_id = sowner.id
+        name = server.name
+        server_id = server.id
 
       end
 
-      # @param [Hash{String => Discordrb::Server}] servers the list of servers the bot is in
+      # @param [Hash{Symbols => Discordrb::Server}] servers the list of servers the bot is in
       def self.make_server_embeds(servers)
         embeds = []
         servers.each do |server_id, server_data|
@@ -90,7 +105,7 @@ module AgeBot
             embed.add_field(name: "Server Owner Distinct:", value: server_data.owner.distinct, inline: true)
             embed.add_field(name: "Server Owner ID:", value: server_data.owner.id, inline: true)
             embed.add_field(name: "Large?:", value: server_data.large? ? 'yes' : 'no', inline: true)
-            embed.add_field(name: "In ServerDB?:", value: AgeBot::Configs::ServerDB.db.servers.to_h.has_key?(server_id.to_s) ? 'yes' : 'no')
+            embed.add_field(name: "In ServerDB?:", value: AgeBot::Configs::ServerDB.db.servers.to_h.has_key?(server_id.to_s.to_sym) ? 'yes' : 'no')
           end
         end
         embeds
