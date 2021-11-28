@@ -19,9 +19,8 @@ module AgeBot
       token: AgeBot::Configs::BotConfig.config.bot.token,
       prefix: prefix_proc,
       fancy_log: true,
-      log_mode: :debug,
+      log_mode: :normal,
       advanced_functionality: true,
-      compress_mode: :stream,
       intents: :all,
       help_command: false,
       chain_delimiter: '',
@@ -29,8 +28,8 @@ module AgeBot
       previous: '',
       sub_chain_end: '',
       sub_chain_start: '',
-      quote_end: '',
-      quote_start: ''
+      quote_end: '\"',
+      quote_start: '\"'
     )
     # Discord commands
     module DiscordCommands
